@@ -1,0 +1,30 @@
+{
+  "name": "hawk-cron-manager",
+  "version": "0.0.1",
+  "description": "Add new tasks for some workers to RabbitMQ due to schedule",
+  "main": "index.ts",
+  "repository": "https://github.com/codex-team/hawk.cron-manager",
+  "author": "CodeX <codex.so>",
+  "license": "UNLICENSED",
+  "scripts": {
+    "start": "ts-node index.ts",
+    "test": "jest"
+  },
+  "dependencies": {
+    "@types/amqplib": "^0.5.13",
+    "@types/cron": "^1.7.2",
+    "@types/jest": "^25.2.1",
+    "@types/yaml": "^1.2.0",
+    "amqplib": "^0.5.5",
+    "cron": "^1.8.2",
+    "dotenv": "^8.2.0",
+    "eslint": "^6.8.0",
+    "eslint-config-codex": "^1.3.3",
+    "jest": "^25.4.0",
+    "ts-jest": "^25.4.0",
+    "ts-node": "^8.9.0",
+    "typescript": "^3.8.3",
+    "wait-for-expect": "^3.0.2",
+    "yaml": "^1.8.3"
+  }
+}
