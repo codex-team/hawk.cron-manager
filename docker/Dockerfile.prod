@@ -14,4 +14,6 @@ COPY --from=builder /usr/src/app/node_modules ./node_modules
 COPY package.json index.ts tsconfig.json ./
 COPY src ./src
 
+USER node
+
 CMD ["yarn", "start"]
