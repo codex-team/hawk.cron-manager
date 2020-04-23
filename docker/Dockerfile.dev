@@ -1,0 +1,15 @@
+FROM node:10-alpine as builder
+
+WORKDIR /usr/src/app
+
+COPY package.json yarn.lock ./
+
+RUN yarn install
+
+FROM node:12-alpine
+
+WORKDIR /usr/src/app
+
+COPY --from=builder /usr/src/app/node_modules ./node_modules
+
+CMD ["yarn", "dev"]
