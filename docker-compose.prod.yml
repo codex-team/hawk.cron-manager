@@ -10,4 +10,4 @@ services:
     volumes:
       - ./.env:/usr/src/app/.env
       - /usr/src/app/node_modules
-      - ./config.yml:/usr/src/app
+      - ./config.yml:/usr/src/app/config.yml
