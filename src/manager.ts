@@ -1,6 +1,8 @@
 import { CronJob } from 'cron';
 import amqp from 'amqplib';
 import { CronManagerConfig } from './types';
+import { Validator } from 'jsonschema';
+import configSchema, { taskSchema } from './configSchema';
 
 /**
  * Cron manager for adding tasks for some workers to RabbitMQ due to schedule
@@ -35,6 +37,16 @@ export default class CronManager {
    */
   constructor(registryUrl: string, config: CronManagerConfig) {
     this.registryUrl = registryUrl;
+    const validator = new Validator();
+
+    validator.addSchema(taskSchema);
+    const validationResult = validator.validate(config, configSchema);
+
+    if (validationResult.errors.length > 0) {
+      validationResult.errors.forEach(error => console.error(error));
+      throw new Error('Config is invalid');
+    }
+
     config.tasks.forEach(task => {
       const job = new CronJob(task.schedule, async () => {
         await this.addTask(task.workerType, task.payload || {});
