@@ -48,9 +48,9 @@ export default class CronManager {
     }
 
     config.tasks.forEach(task => {
-      const job = new CronJob(task.schedule, async () => {
-        await this.addTask(task.workerType, task.payload || {});
-      });
+      const job = new CronJob(task.schedule, () =>
+        this.addTask(task.workerType, task.payload || {})
+      );
 
       this.jobs.push(job);
     });
