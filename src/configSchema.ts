@@ -6,6 +6,7 @@ import { isValidCron } from 'cron-validator';
  */
 const configSchema = {
   id: '/Config',
+  type: 'object',
   properties: {
     tasks: {
       type: 'array',
@@ -13,6 +14,7 @@ const configSchema = {
     },
   },
   required: [ 'tasks' ],
+  additionalProperties: false,
 };
 
 /**
@@ -20,6 +22,7 @@ const configSchema = {
  */
 const taskSchema = {
   id: '/Task',
+  type: 'object',
   properties: {
     workerType: { type: 'string' },
     schedule: {
@@ -29,6 +32,8 @@ const taskSchema = {
     payload: { type: 'object, null' },
   },
   required: ['workerType', 'schedule'],
+  additionalProperties: false,
+
 };
 
 /**

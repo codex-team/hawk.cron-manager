@@ -37,6 +37,31 @@ const mockedConnect = amqp.connect as jest.Mock;
 
 mockedConnect.mockResolvedValue(Promise.resolve(mockedAmqpConnection));
 
+/**
+ * CronManager config (with error) for testing
+ */
+const wrongConfig = {
+  tasks: [
+    {
+      workerType: 'testWorkerName',
+      schedule: '* * * * * *',
+      unnecessaryProp: true,
+    },
+  ],
+};
+
+/**
+ * CronManager config for testing (with error in schedule format)
+ */
+const wrongConfigWithCronError: CronManagerConfig = {
+  tasks: [
+    {
+      workerType: 'testWorkerName',
+      schedule: '* * * * * 190',
+    },
+  ],
+};
+
 describe('CronManager', () => {
   let cronManager: CronManager;
 
@@ -59,5 +84,15 @@ describe('CronManager', () => {
     await cronManager.stop();
     expect(mockedAmqpConnection.close).toHaveBeenCalledTimes(1);
     expect(mockedAmqpChannel.close).toHaveBeenCalledTimes(1);
+  });
+
+  it('should not initialized if config is invalid (additional prop)', () => {
+    expect(() => new CronManager('amqp://fake', wrongConfig as CronManagerConfig))
+      .toThrow('Config is invalid');
+  });
+
+  it('should not initialized if config is invalid (invalid schedule string)', () => {
+    expect(() => new CronManager('amqp://fake', wrongConfigWithCronError))
+      .toThrow('Config is invalid');
   });
 });
