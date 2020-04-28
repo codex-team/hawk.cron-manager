@@ -2,6 +2,7 @@ import CronManager from '../src/manager';
 import { CronManagerConfig } from '../src/types';
 import amqp from 'amqplib';
 import waitForExpect from 'wait-for-expect';
+import { CronJob } from 'cron';
 
 jest.mock('amqplib');
 
@@ -75,6 +76,10 @@ describe('CronManager', () => {
   it('should start correctly', async () => {
     await cronManager.start();
     expect(mockedConnect).toHaveBeenCalledTimes(1);
+
+    const jobs = cronManager['jobs'] as CronJob[];
+
+    expect(jobs.shift()?.running).toEqual(true);
   });
 
   it('should correctly add tasks to the queue', async () => {
