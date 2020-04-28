@@ -8,12 +8,14 @@ const configSchema = {
   id: '/Config',
   type: 'object',
   properties: {
+    registryUrl: { type: 'string' },
+    exchangeName: { type: 'string' },
     tasks: {
       type: 'array',
       items: { $ref: '/Task' },
     },
   },
-  required: [ 'tasks' ],
+  required: ['registryUrl', 'tasks'],
   additionalProperties: false,
 };
 

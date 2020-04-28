@@ -3,6 +3,16 @@
  */
 export interface CronManagerConfig {
   /**
+   * RabbitMQ connection URL
+   */
+  registryUrl: string;
+
+  /**
+   * RabbitMQ exchange name (cron-tasks by default)
+   */
+  exchangeName?: string;
+
+  /**
    * Task list to manage
    */
   tasks: CronManagerTask[];

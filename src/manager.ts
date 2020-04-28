@@ -14,6 +14,11 @@ export default class CronManager {
   private readonly jobs: CronJob[] = [];
 
   /**
+   * RabbitMQ exchange name (cron-tasks by default)
+   */
+  private readonly exchangeName: string;
+
+  /**
    * Connection to Registry
    */
   private registryConnection?: amqp.Connection;
@@ -32,11 +37,11 @@ export default class CronManager {
   /**
    * Creates manager instance
    *
-   * @param registryUrl - registry endpoint to connect
    * @param config - configuration for jobs initialization
    */
-  constructor(registryUrl: string, config: CronManagerConfig) {
-    this.registryUrl = registryUrl;
+  constructor(config: CronManagerConfig) {
+    this.registryUrl = config.registryUrl;
+    this.exchangeName = config.exchangeName || 'cron-tasks';
     const validator = new Validator();
 
     validator.addSchema(taskSchema);
@@ -67,7 +72,8 @@ export default class CronManager {
       throw new Error('Can\'t send task to the queue because there is no connection to the Registry');
     }
 
-    return this.channelWithRegistry.sendToQueue(
+    return this.channelWithRegistry.publish(
+      this.registryUrl,
       workerName,
       Buffer.from(JSON.stringify(payload))
     );

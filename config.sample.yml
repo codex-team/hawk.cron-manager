@@ -1,6 +1,12 @@
+# RabbitMQ connection URL
+registryUrl: 'amqp://guest:guest@rabbitmq:5672/'
+
+# RabbitMQ exchange name (cron-tasks by default)
+# exchangeName: 'cron-tasks'
+
 # List of tasks to manage
 tasks:
-    # Worker type to add tasks (equal to the Registry queue name)
+  # Worker type to add tasks (equal to the Registry queue name)
   - workerType: 'archiver'
 
     # Cron-like schedule string

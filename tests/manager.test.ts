@@ -9,6 +9,7 @@ jest.mock('amqplib');
  * CronManager config for testing
  */
 const testConfig: CronManagerConfig = {
+  registryUrl: 'ampq://fake',
   tasks: [
     {
       workerType: 'testWorkerName',
@@ -21,7 +22,7 @@ const testConfig: CronManagerConfig = {
  * Amqp channel mock
  */
 const mockedAmqpChannel = {
-  sendToQueue: jest.fn(),
+  publish: jest.fn(),
   close: jest.fn(),
 };
 
@@ -41,6 +42,7 @@ mockedConnect.mockResolvedValue(Promise.resolve(mockedAmqpConnection));
  * CronManager config (with error) for testing
  */
 const wrongConfig = {
+  registryUrl: 'ampq://fake',
   tasks: [
     {
       workerType: 'testWorkerName',
@@ -54,6 +56,7 @@ const wrongConfig = {
  * CronManager config for testing (with error in schedule format)
  */
 const wrongConfigWithCronError: CronManagerConfig = {
+  registryUrl: 'ampq://fake',
   tasks: [
     {
       workerType: 'testWorkerName',
@@ -66,7 +69,7 @@ describe('CronManager', () => {
   let cronManager: CronManager;
 
   it('should initialized correctly', () => {
-    cronManager = new CronManager('ampq://fake', testConfig);
+    cronManager = new CronManager(testConfig);
   });
 
   it('should start correctly', async () => {
@@ -76,7 +79,7 @@ describe('CronManager', () => {
 
   it('should correctly add tasks to the queue', async () => {
     await waitForExpect(() => {
-      expect(mockedAmqpChannel.sendToQueue).toHaveBeenCalled();
+      expect(mockedAmqpChannel.publish).toHaveBeenCalled();
     }, 2000);
   });
 
@@ -87,12 +90,12 @@ describe('CronManager', () => {
   });
 
   it('should not initialized if config is invalid (additional prop)', () => {
-    expect(() => new CronManager('amqp://fake', wrongConfig as CronManagerConfig))
+    expect(() => new CronManager(wrongConfig as CronManagerConfig))
       .toThrow('Config is invalid');
   });
 
   it('should not initialized if config is invalid (invalid schedule string)', () => {
-    expect(() => new CronManager('amqp://fake', wrongConfigWithCronError))
+    expect(() => new CronManager(wrongConfigWithCronError))
       .toThrow('Config is invalid');
   });
 });
