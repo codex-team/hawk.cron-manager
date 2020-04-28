@@ -23,9 +23,9 @@ export interface CronManagerConfig {
  */
 export interface CronManagerTask {
   /**
-   * Worker type to add tasks (equal to the Registry queue name)
+   * Routing key for tasks delivery
    */
-  workerType: string;
+  routingKey: string;
 
   /**
    * Cron-like schedule string

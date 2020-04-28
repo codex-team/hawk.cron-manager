@@ -54,7 +54,7 @@ export default class CronManager {
 
     config.tasks.forEach(task => {
       const job = new CronJob(task.schedule, () =>
-        this.addTask(task.workerType, task.payload || {})
+        this.addTask(task.routingKey, task.payload || {})
       );
 
       this.jobs.push(job);
@@ -64,17 +64,17 @@ export default class CronManager {
   /**
    * Adds task to other worker
    *
-   * @param workerName - worker's name
+   * @param routingKey - worker's name
    * @param payload - payload object
    */
-  public async addTask(workerName: string, payload: object): Promise<boolean> {
+  public async addTask(routingKey: string, payload: object): Promise<boolean> {
     if (!this.channelWithRegistry) {
       throw new Error('Can\'t send task to the queue because there is no connection to the Registry');
     }
 
     return this.channelWithRegistry.publish(
-      this.registryUrl,
-      workerName,
+      this.exchangeName,
+      routingKey,
       Buffer.from(JSON.stringify(payload))
     );
   }

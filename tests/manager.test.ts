@@ -12,7 +12,7 @@ const testConfig: CronManagerConfig = {
   registryUrl: 'ampq://fake',
   tasks: [
     {
-      workerType: 'testWorkerName',
+      routingKey: 'testWorkerName',
       schedule: '* * * * * *',
     },
   ],
@@ -45,7 +45,7 @@ const wrongConfig = {
   registryUrl: 'ampq://fake',
   tasks: [
     {
-      workerType: 'testWorkerName',
+      routingKey: 'testWorkerName',
       schedule: '* * * * * *',
       unnecessaryProp: true,
     },
@@ -59,7 +59,7 @@ const wrongConfigWithCronError: CronManagerConfig = {
   registryUrl: 'ampq://fake',
   tasks: [
     {
-      workerType: 'testWorkerName',
+      routingKey: 'cron-tasks/archiver',
       schedule: '* * * * * 190',
     },
   ],

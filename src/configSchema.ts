@@ -26,14 +26,14 @@ const taskSchema = {
   id: '/Task',
   type: 'object',
   properties: {
-    workerType: { type: 'string' },
+    routingKey: { type: 'string' },
     schedule: {
       type: 'string',
       format: 'cron',
     },
     payload: { type: 'object, null' },
   },
-  required: ['workerType', 'schedule'],
+  required: ['routingKey', 'schedule'],
   additionalProperties: false,
 
 };
