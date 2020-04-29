@@ -78,8 +78,9 @@ describe('CronManager', () => {
     expect(mockedConnect).toHaveBeenCalledTimes(1);
 
     const jobs = cronManager['jobs'] as CronJob[];
+    const isJobRunning = jobs[0].running;
 
-    expect(jobs.shift()?.running).toEqual(true);
+    expect(isJobRunning).toEqual(true);
   });
 
   it('should correctly add tasks to the queue', async () => {
