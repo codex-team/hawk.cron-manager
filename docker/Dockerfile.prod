@@ -1,0 +1,19 @@
+FROM node:12-alpine as builder
+
+WORKDIR /usr/src/app
+
+COPY package.json yarn.lock ./
+
+RUN yarn install --prod
+
+FROM node:12-alpine
+
+WORKDIR /usr/src/app
+
+COPY --from=builder /usr/src/app/node_modules ./node_modules
+COPY package.json index.ts tsconfig.json ./
+COPY src ./src
+
+USER node
+
+CMD ["yarn", "start"]

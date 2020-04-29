@@ -1,0 +1,10 @@
+version: "3.4"
+
+services:
+  cron-manager:
+    build:
+      dockerfile: "docker/Dockerfile.prod"
+      context: .
+    volumes:
+      - /usr/src/app/node_modules
+      - ./config.yml:/usr/src/app/config.yml
