@@ -22,11 +22,10 @@ jobs:
           dockerfile: docker/Dockerfile.prod
           push: ${{ endsWith(github.ref, '/stage') || endsWith(github.ref, '/prod') }}
 
-      - name: Deploy on stage
-        if: endsWith(github.ref, '/stage')
-        run: |
-          DEPLOY_TOKEN=${{ secrets.DEPLOY_TOKEN }}
-          curl -X POST -H "Content-Type: application/json" --data "{\"branch\":\"stage\",\"secret_token\":\"$DEPLOY_TOKEN\"}" https://stage.hawk.so/deploy
+      - name: Deploy stage
+      if: endsWith(github.ref, '/stage')
+      run: |
+        curl -X POST -H "Content-Type: application/json" --data "{\"branch\":\"${GITHUB_REF##*/}\",\"secret_token\":\"${{ secrets.DEPLOY_TOKEN }}\"}" ${{ secrets.DEPLOY_ADDRESS }}
 
       - name: Deploy on prod
         if: endsWith(github.ref, '/prod')
