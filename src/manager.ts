@@ -53,9 +53,10 @@ export default class CronManager {
     }
 
     config.tasks.forEach(task => {
-      const job = new CronJob(task.schedule, () =>
-        this.addTask(task.routingKey, task.payload || {})
-      );
+      const job = new CronJob(task.schedule, async () => {
+        await this.addTask(task.routingKey, task.payload || {});
+        console.log(`[Cron-manager] ${new Date()} Added task for routing key ${task.routingKey}`);
+      });
 
       this.jobs.push(job);
     });
