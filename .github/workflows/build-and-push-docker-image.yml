@@ -1,4 +1,4 @@
-name: Build and deploy
+name: Build and push docker image
 
 on: [push]
 
@@ -7,7 +7,7 @@ env:
 
 jobs:
   build_and_deploy:
-    runs-on: ubuntu-18.04
+    runs-on: ubuntu-20.04
     steps:
       - name: Checkout repository
         uses: actions/checkout@v2
@@ -21,14 +21,3 @@ jobs:
           tag_with_ref: true
           dockerfile: docker/Dockerfile.prod
           push: ${{ endsWith(github.ref, '/stage') || endsWith(github.ref, '/prod') }}
-
-      - name: Deploy stage
-        if: endsWith(github.ref, '/stage')
-        run: |
-          curl --user ${{ secrets.DEPLOY_HAWK_STAGE_AUTH }} ${{ secrets.DEPLOY_HAWK_STAGE_ADDRESS }}?image=${{ env.DOCKER_REPO }}:stage
-
-      - name: Deploy on prod
-        if: endsWith(github.ref, '/prod')
-        run: |
-          DEPLOY_TOKEN_PROD=${{ secrets.DEPLOY_TOKEN_PROD }}
-          curl -X POST -H "Content-Type: application/json" --data "{\"branch\":\"prod\",\"secret_token\":\"$DEPLOY_TOKEN_PROD\"}" http://beta.hawk.so:7102/deploy
