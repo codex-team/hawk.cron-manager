@@ -5,12 +5,21 @@ registryUrl: 'amqp://guest:guest@rabbitmq:5672/'
 # exchangeName: 'cron-tasks'
 
 # List of tasks to manage
+#
+#  - routingKey: 'cron-tasks/archiver'        # Routing key for tasks delivery
+#    schedule: '0 * * * * *'                  # Cron-like schedule string with seconds
+#    payload:                                 # Any data to send with task
 tasks:
-  # Routing key for tasks delivery
   - routingKey: 'cron-tasks/archiver'
-
-    # Cron-like schedule string
-    schedule: '* * * * * *'
-
-    # Any data to send with task
+    schedule: '0 */5 * * * *'
     payload:
+
+  - routingKey: 'cron-tasks/paymaster'
+    schedule: '0 */5 * * * *'
+    payload:
+      type: 'workspace-subscription-check'
+
+  - routingKey: 'cron-tasks/limiter'
+    schedule: '0 */5 * * * *'
+    payload:
+      type: 'regular-workspaces-check'
