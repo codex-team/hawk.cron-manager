@@ -5,7 +5,7 @@
   "main": "index.ts",
   "repository": "https://github.com/codex-team/hawk.cron-manager",
   "author": "CodeX <codex.so>",
-  "license": "UNLICENSED",
+  "license": "AGPL-3.0-only",
   "scripts": {
     "start": "ts-node index.ts",
     "test": "jest",
