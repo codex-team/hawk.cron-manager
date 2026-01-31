@@ -23,3 +23,8 @@ tasks:
     schedule: '0 */5 * * * *'
     payload:
       type: 'regular-workspaces-check'
+
+  - routingKey: 'cron-tasks/task-manager'
+    schedule: '0 */5 * * * *'
+    payload:
+      type: 'auto-task-creation'
